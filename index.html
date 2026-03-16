@@ -5,76 +5,77 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>白米計算機</title>
   <meta name="description" content="白米対応の重量を決める計算ツール" />
-  <meta name="theme-color" content="#ffffff" />
+  <meta name="theme-color" content="#f2faf5" />
   <link rel="manifest" href="manifest.json" />
   <link rel="apple-touch-icon" href="icons/icon-192.png" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg: #fafafa;
+      --bg: #f2faf5;
       --white: #ffffff;
-      --border: #e8e8e8;
-      --border-focus: #333;
-      --text: #111;
-      --muted: #999;
-      --accent: #111;
-      --radius: 10px;
+      --border: #c2e0cc;
+      --border-focus: #3a9e6a;
+      --text: #103a20;
+      --muted: #60a07a;
+      --accent: #2a8f5a;
+      --accent-light: #e6f7ec;
+      --result-bg: #edf7f1;
+      --radius: 12px;
     }
 
     body {
       background: var(--bg);
       color: var(--text);
-      font-family: 'Inter', sans-serif;
+      font-family: 'Noto Sans JP', sans-serif;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 48px 20px 60px;
+      padding: 40px 18px 60px;
     }
 
     header {
       width: 100%;
-      max-width: 400px;
-      margin-bottom: 40px;
-    }
-
-    h1 {
-      font-size: 22px;
-      font-weight: 600;
-      letter-spacing: -0.02em;
+      max-width: 440px;
+      margin-bottom: 28px;
+      padding-bottom: 20px;
+      border-bottom: 2px solid var(--border);
     }
 
     .subtitle {
-      margin-top: 5px;
-      font-size: 14px;
-      color: var(--muted);
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: 0.02em;
     }
 
+    /* Card */
     .card {
       width: 100%;
-      max-width: 400px;
+      max-width: 440px;
       background: var(--white);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 24px;
-      margin-bottom: 12px;
+      border: 1.5px solid var(--border);
+      border-radius: 16px;
+      padding: 24px 20px;
+      margin-bottom: 14px;
+      box-shadow: 0 2px 12px rgba(30,120,70,0.07);
     }
 
-    .field { margin-bottom: 20px; }
+    .field { margin-bottom: 22px; }
     .field:last-child { margin-bottom: 0; }
 
     .field-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 8px;
+      margin-bottom: 10px;
     }
 
     .field-label {
-      font-size: 13px;
-      font-weight: 500;
+      font-size: 16px;
+      font-weight: 700;
       color: var(--text);
     }
 
@@ -90,15 +91,15 @@
     }
 
     .toggle-text {
-      font-size: 11px;
+      font-size: 13px;
       color: var(--muted);
       white-space: nowrap;
     }
 
     .toggle-switch {
       position: relative;
-      width: 32px;
-      height: 18px;
+      width: 36px;
+      height: 20px;
       flex-shrink: 0;
     }
 
@@ -110,7 +111,7 @@
       position: absolute;
       inset: 0;
       background: #ddd;
-      border-radius: 9px;
+      border-radius: 10px;
       transition: background 0.2s;
       cursor: pointer;
     }
@@ -118,77 +119,83 @@
     .toggle-track::after {
       content: '';
       position: absolute;
-      width: 12px; height: 12px;
+      width: 14px; height: 14px;
       background: white;
       border-radius: 50%;
       top: 3px; left: 3px;
       transition: transform 0.2s;
-      box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.2);
     }
 
     .toggle-switch input:checked + .toggle-track { background: var(--accent); }
-    .toggle-switch input:checked + .toggle-track::after { transform: translateX(14px); }
+    .toggle-switch input:checked + .toggle-track::after { transform: translateX(16px); }
 
     /* Inputs */
     select, input[type="number"] {
       width: 100%;
-      padding: 11px 14px;
-      border: 1px solid var(--border);
+      padding: 14px 16px;
+      border: 1.5px solid var(--border);
       border-radius: var(--radius);
       background: var(--bg);
       color: var(--text);
-      font-family: 'Inter', sans-serif;
-      font-size: 15px;
+      font-family: 'Noto Sans JP', sans-serif;
+      font-size: 17px;
+      font-weight: 500;
       outline: none;
-      transition: border-color 0.15s;
+      transition: border-color 0.15s, box-shadow 0.15s;
       -webkit-appearance: none;
     }
 
     select {
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23999' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%2360a07a' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
       background-repeat: no-repeat;
-      background-position: right 14px center;
-      padding-right: 36px;
+      background-position: right 16px center;
+      padding-right: 40px;
       cursor: pointer;
     }
 
-    select:focus, input[type="number"]:focus { border-color: var(--border-focus); }
+    select:focus, input[type="number"]:focus {
+      border-color: var(--border-focus);
+      box-shadow: 0 0 0 3px rgba(42,143,90,0.12);
+    }
 
     input[type="number"]::-webkit-outer-spin-button,
     input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; }
 
     .b-readonly {
       width: 100%;
-      padding: 11px 14px;
-      border: 1px solid var(--border);
+      padding: 14px 16px;
+      border: 1.5px solid var(--border);
       border-radius: var(--radius);
-      background: var(--bg);
-      font-family: 'Inter', sans-serif;
-      font-size: 15px;
+      background: var(--accent-light);
+      font-family: 'Noto Sans JP', sans-serif;
+      font-size: 17px;
+      font-weight: 500;
       color: var(--muted);
     }
 
     .divider {
-      height: 1px;
+      height: 1.5px;
       background: var(--border);
-      margin: 20px 0;
+      margin: 22px 0;
     }
 
     /* Result */
     .result-card {
       width: 100%;
-      max-width: 400px;
-      background: var(--white);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 24px;
+      max-width: 440px;
+      background: var(--result-bg);
+      border: 1.5px solid var(--border);
+      border-radius: 16px;
+      padding: 24px 20px;
+      box-shadow: 0 2px 12px rgba(30,120,70,0.07);
     }
 
     .result-label {
-      font-size: 13px;
-      font-weight: 500;
-      color: var(--text);
-      margin-bottom: 12px;
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--muted);
+      margin-bottom: 10px;
     }
 
     .result-row {
@@ -198,48 +205,55 @@
     }
 
     .result-number {
-      font-size: 56px;
-      font-weight: 300;
-      letter-spacing: -0.03em;
+      font-size: 68px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
       line-height: 1;
+      color: var(--accent);
       transition: color 0.2s;
     }
 
     .result-unit {
-      font-size: 24px;
-      font-weight: 300;
+      font-size: 28px;
+      font-weight: 500;
       color: var(--muted);
     }
 
-    .result-number.empty { color: #e0e0e0; }
-    .result-number.error { font-size: 13px; font-weight: 400; color: #cc3333; line-height: 1.6; }
+    .result-number.empty {
+      color: #e8d0be;
+      font-weight: 300;
+    }
+
+    .result-number.error {
+      font-size: 15px;
+      font-weight: 500;
+      color: #cc3333;
+      line-height: 1.6;
+    }
 
     .result-message {
-      margin-top: 10px;
-      font-size: 13px;
-      color: var(--muted);
-      display: none;
-    }
-
-    .result-detail {
-      margin-top: 12px;
-      font-size: 12px;
-      color: #ccc;
-      line-height: 1.7;
-      display: none;
+      margin-top: 14px;
+      padding: 12px 16px;
+      background: var(--accent);
+      color: white;
+      border-radius: 10px;
+      font-size: 17px;
+      font-weight: 700;
+      text-align: center;
+      letter-spacing: 0.05em;
     }
 
     /* Install */
     #install-banner {
       display: none;
       width: 100%;
-      max-width: 400px;
-      margin-top: 12px;
-      padding: 12px 16px;
+      max-width: 440px;
+      margin-top: 14px;
+      padding: 14px 18px;
       background: var(--white);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      font-size: 12px;
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      font-size: 14px;
       color: var(--muted);
       align-items: center;
       gap: 10px;
@@ -248,14 +262,14 @@
 
     #install-btn {
       margin-left: auto;
-      padding: 6px 12px;
+      padding: 8px 16px;
       background: var(--accent);
       color: white;
       border: none;
-      border-radius: 6px;
-      font-family: 'Inter', sans-serif;
-      font-size: 11px;
-      font-weight: 500;
+      border-radius: 8px;
+      font-family: 'Noto Sans JP', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
       cursor: pointer;
       white-space: nowrap;
     }
@@ -264,7 +278,7 @@
 <body>
 
   <header>
-    <div class="subtitle">白米対応の重量を決めるよ！</div>
+    <div class="subtitle">🌿 白米対応の重量を決めるよ！</div>
   </header>
 
   <div class="card">
@@ -318,7 +332,7 @@
     <div class="result-label">追加であと</div>
     <div class="result-row">
       <div class="result-number empty" id="result-number">——</div>
-      <div class="result-unit" id="result-unit" style="display:none">g</div>
+      <span class="result-unit" id="result-unit" style="display:none">g</span>
     </div>
     <div class="result-message" id="result-message" style="display:none">精米してください</div>
   </div>
@@ -330,20 +344,15 @@
 
   <script>
     const AB_MAP = { 5015: 5000, 3010: 2500, 2005: 1500, 7015: 7000, 6015: 6000, 4015: 4000, 2510: 2000 };
-    let modeA = 'preset'; // 'preset' | 'manual'
+    let modeA = 'preset';
 
     function toggleA() {
       modeA = document.getElementById('toggle-a').checked ? 'manual' : 'preset';
       document.getElementById('a-toggle-label').textContent = modeA === 'manual' ? 'プリセットに戻す' : '手入力';
-
-      // A の表示切り替え
-      document.getElementById('select-a').style.display = modeA === 'preset' ? '' : 'none';
-      document.getElementById('input-a').style.display  = modeA === 'manual'  ? '' : 'none';
-
-      // B: Aが手入力なら手入力欄、プルダウンなら連動表示
+      document.getElementById('select-a').style.display  = modeA === 'preset' ? '' : 'none';
+      document.getElementById('input-a').style.display   = modeA === 'manual'  ? '' : 'none';
       document.getElementById('b-readonly').style.display = modeA === 'preset' ? '' : 'none';
       document.getElementById('input-b').style.display   = modeA === 'manual'  ? '' : 'none';
-
       if (modeA === 'preset') onSelectA(); else calculate();
     }
 
@@ -365,25 +374,23 @@
         : parseFloat(document.getElementById('input-b').value);
 
       const cVal = document.getElementById('input-c').value;
-      const C = parseFloat(cVal);
+      const C    = parseFloat(cVal);
 
       const numEl  = document.getElementById('result-number');
       const unitEl = document.getElementById('result-unit');
       const msgEl  = document.getElementById('result-message');
 
-      // 未入力
       if (isNaN(A) || isNaN(B) || cVal === '' || isNaN(C)) {
-        numEl.textContent = '——';
-        numEl.className = 'result-number empty';
+        numEl.textContent    = '——';
+        numEl.className      = 'result-number empty';
         unitEl.style.display = 'none';
         msgEl.style.display  = 'none';
         return;
       }
 
-      // ゼロ除算
       if (C === 0) {
-        numEl.textContent = 'C に 0 は指定できません';
-        numEl.className = 'result-number error';
+        numEl.textContent    = 'Cに0は指定できません';
+        numEl.className      = 'result-number error';
         unitEl.style.display = 'none';
         msgEl.style.display  = 'none';
         return;
@@ -392,13 +399,12 @@
       const raw = (A / C - 1) * B;
       const X   = ceilTo5(raw);
 
-      numEl.textContent = X.toLocaleString();
-      numEl.className   = 'result-number';
+      numEl.textContent    = X.toLocaleString();
+      numEl.className      = 'result-number';
       unitEl.style.display = '';
-      msgEl.style.display  = '';
+      msgEl.style.display  = '';        // ← 確実に表示
     }
 
-    // PWA install
     let deferredPrompt;
     window.addEventListener('beforeinstallprompt', e => {
       e.preventDefault();
