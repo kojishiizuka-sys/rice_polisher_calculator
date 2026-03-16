@@ -232,15 +232,10 @@
     }
 
     .result-message {
-      margin-top: 14px;
-      padding: 12px 16px;
-      background: var(--accent);
-      color: white;
-      border-radius: 10px;
+      margin-top: 10px;
       font-size: 17px;
       font-weight: 700;
-      text-align: center;
-      letter-spacing: 0.05em;
+      color: var(--muted);
     }
 
     /* Install */
@@ -401,8 +396,8 @@
 
       numEl.textContent    = X.toLocaleString();
       numEl.className      = 'result-number';
-      unitEl.style.display = '';
-      msgEl.style.display  = '';        // ← 確実に表示
+      unitEl.style.display = 'inline';
+      msgEl.style.display  = 'block';
     }
 
     let deferredPrompt;
