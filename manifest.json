@@ -1,11 +1,11 @@
 {
-  "name": "X計算機",
-  "short_name": "X計算",
-  "description": "X = (A/C - 1) × B の計算ツール（5刻み切り上げ）",
+  "name": "白米対応計算機",
+  "short_name": "白米対応",
+  "description": "白米対応の重量を決める計算ツール",
   "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#0a0a0f",
-  "theme_color": "#0a0a0f",
+  "background_color": "#f2faf5",
+  "theme_color": "#f2faf5",
   "orientation": "portrait-primary",
   "icons": [
     {
